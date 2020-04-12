@@ -58,7 +58,7 @@ input[type=button] {
 }
 
 /* oil mixing */
-input[type=text] {
+input[type=number] {
 	float: right;
 	border-width: 0;
 	text-align: right;
