@@ -2,10 +2,13 @@
 body {
 	background: #eaeaea;
 	margin: auto;
-/*	font-size: 2em; */
 	padding: 0.25em 0.25em 1em 0.25em;
 	text-align: center;
-/*	max-width: 30em; */
+}
+@media screen and (min-width: 30em) {
+	body {
+		max-width: 30em;
+	}
 }
 h3 {
 	text-decoration: underline;
@@ -14,7 +17,6 @@ span {
 	float: right;
 }
 input[type=button] {
-/*	font-size: 1em; */
 	border-width: 3px;
 	margin: 0 auto;
 }
@@ -34,11 +36,7 @@ input[type=button] {
 	font-weight: bold;
 }
 
-/* pill arms
-input[type=radio] {
-	height: 2em;
-	width: 2em;
-} */
+/* pill arms */
 .radios {
 	display: grid;
 	grid-template-columns: auto 6em auto;
@@ -63,7 +61,6 @@ input[type=radio] {
 input[type=text] {
 	float: right;
 	border-width: 0;
-/*	font-size: 0.75em; */
 	text-align: right;
 }
 .smallText {
