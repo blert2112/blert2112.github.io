@@ -1,0 +1,107 @@
+/* common */
+body {
+	background: #eaeaea;
+	margin: auto;
+	font-size: 2em;
+	padding: 0.25em 0.25em 1em 0.25em;
+	text-align: center;
+	max-width: 24em;
+}
+h3 {
+	text-decoration: underline;
+}
+span {
+	float: right;
+}
+input[type=button] {
+	font-size: 1em;
+	border-width: 3px;
+	margin: 0 auto;
+}
+.container {
+	border: 1px solid black;
+	padding-left: 0.83em;
+	padding-right: 0.83em;
+	margin: 0 1em 1em 1em;
+}
+.labels {
+	text-align: left;
+}
+.labelsShort {
+	margin-bottom: 0.5em;
+}
+
+/* pill arms */
+input[type=radio] {
+	height: 2em;
+	width: 2em;
+}
+.radios {
+	display: grid;
+	grid-template-columns: auto 6em auto;
+}
+.activeDiv {
+  grid-column: 1 / 2;
+  text-align: right;
+  margin-right: 1em;
+}
+.degreeDiv {
+  grid-column: 2 / 3;
+  border-left: 1px solid darkgray;
+  border-right: 1px solid darkgray;
+}
+.passiveDiv {
+  grid-column: 3 / 4;
+  text-align: left;
+  margin-left: 1em;
+}
+.footer {
+
+}
+
+/* oil mixing */
+input[type=text] {
+	float: right;
+	border-width: 0;
+	font-size: 0.75em;
+	text-align: right;
+}
+
+
+
+.smallText {
+	font-size: x-small;
+}
+
+.result {
+	font-weight: bold;
+}
+
+/* navigation */
+.naviagtion {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	background-color: lightgrey;
+}
+.navCtrl {
+	margin-top: auto;
+}
+.navCtrl:hover {
+	color: white;
+}
+#nav1 {
+	grid-column: 1 / 2;
+	border-bottom: 2px solid darkblue;
+}
+#nav2 {
+	grid-column: 2/3;
+}
+#nav3 {
+	grid-column: 3/4;
+}
+#page1 {
+	display: block;
+}
+#page2, #page3 {
+	display: none;
+}

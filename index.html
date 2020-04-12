@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Various RC Calculators</title>
+		<link rel="manifest" href="/manifest.json">
+		<link rel='stylesheet' href='style.css'>
+		<script src='script.js'></script>
+	</head>
+	<body>
+		<div class="naviagtion">
+			<div class="navCtrl" id="nav1" onclick="activatePage('1')">
+				B6 Pills
+			</div>
+			<div class="navCtrl" id="nav2" onclick="activatePage('2')">
+				Silicone Oil Mixing
+			</div>
+			<div class="navCtrl" id="nav3" onclick="activatePage('3')">
+				B6 Gear Ratio
+			</div>
+		</div>
+		<div class="pages">
+			<div class="pageCtrl" id="page1"> <!-- START page 1 -->
+				<h3>RC10B6 - Arm Mount Pill Calculator</h3>
+				<div class="container">
+					<p class="labels labelsShort">C-arm:</p>
+					
+				
+				<div class="radios">
+					<div class="activeDiv" onclick="doPillFuncs('c')">
+						<input type="radio" name="c1" value="up_out">
+						<input type="radio" name="c1" value="up_center">
+						<input type="radio" name="c1" value="up_in">
+						<br>
+						<input type="radio" name="c1" value="center_out">
+						<input type="radio" name="c1" value="center_center" checked>
+						<input type="radio" name="c1" value="center_in">
+						<br>
+						<input type="radio" name="c1" value="down_out">
+						<input type="radio" name="c1" value="down_center">
+						<input type="radio" name="c1" value="down_in">
+					</div>
+					<div class="degreeDiv" onclick="doPillFuncs('c')">
+						<input type="radio" name="c_degree" value="0" checked disabled>0.0&deg;
+						<br>
+						<input type="radio" name="c_degree" value="0.5">0.5&deg;
+						<br>
+						<input type="radio" name="c_degree" value="1">1.0&deg;
+					</div>
+					<div class="passiveDiv" onclick="return false;">
+						<input type="radio" name="c2" value="up_in">
+						<input type="radio" name="c2" value="up_center">
+						<input type="radio" name="c2" value="up_out">
+						<br>
+						<input type="radio" name="c2" value="center_in">
+						<input type="radio" name="c2" value="center_center" checked>
+						<input type="radio" name="c2" value="center_out">
+						<br>
+						<input type="radio" name="c2" value="down_in">
+						<input type="radio" name="c2" value="down_center">
+						<input type="radio" name="c2" value="down_out">
+					</div>
+				</div>
+				
+					<hr>
+
+					<p class="labels labelsShort">D-arm:</p>
+					
+				<div class="radios">
+					<div class="activeDiv" onclick="doPillFuncs('d')">
+						<input type="radio" name="d1" value="up_out">
+						<input type="radio" name="d1" value="up_center">
+						<input type="radio" name="d1" value="up_in">
+						<br>
+						<input type="radio" name="d1" value="center_out">
+						<input type="radio" name="d1" value="center_center" checked>
+						<input type="radio" name="d1" value="center_in">
+						<br>
+						<input type="radio" name="d1" value="down_out">
+						<input type="radio" name="d1" value="down_center">
+						<input type="radio" name="d1" value="down_in">
+					</div>
+					<div class="degreeDiv" onclick="doPillFuncs('d')">
+						<input type="radio" name="d_degree" value="0" checked disabled>0.0&deg;
+						<br>
+						<input type="radio" name="d_degree" value="0.5">0.5&deg;
+						<br>
+						<input type="radio" name="d_degree" value="1">1.0&deg;
+					</div>
+					<div class="passiveDiv" onclick="return false;">
+						<input type="radio" name="d2" value="up_in">
+						<input type="radio" name="d2" value="up_center">
+						<input type="radio" name="d2" value="up_out">
+						<br>
+						<input type="radio" name="d2" value="center_in">
+						<input type="radio" name="d2" value="center_center" checked>
+						<input type="radio" name="d2" value="center_out">
+						<br>
+						<input type="radio" name="d2" value="down_in">
+						<input type="radio" name="d2" value="down_center">
+						<input type="radio" name="d2" value="down_out">
+					</div>
+				</div>
+				
+					<hr>
+					<div class="footer">
+						<p class="labels">Toe:<span class="result" id="toe">3</span></p>
+						<p class="labels">Anti-squat:<span class="result" id="antisquat">1</span></p>
+						<p class="labels">Roll center:<span class="result" id="roll">Medium</span></p>
+						<p class="labels">Pivot position:<span class="result" id="pivot">Medium</span></p>
+					</div>
+				</div>
+			</div>
+			<div class="pageCtrl" id="page2"> <!-- START page 2 -->
+					<h3>Silicone Oil Viscosity Calculator</h3>
+					<p class="smallText">
+						All values should be in centistokes (cSt). Weights (30wt, etc.) can vary by manufacturer but cSt should be standard.
+					</p>
+					<div class="container">
+						<p class="labels">Fluid A:<input type="text" id="viscA" placeholder="cSt"></p>
+						<p class="labels">Fluid B:<input type="text" id="viscB" placeholder="cSt"></p>
+						<p class="labels">Target:<input type="text" id="target" placeholder="cSt"></p>
+						<input type="button" onclick="calculateOil()" value="Calculate">
+						<hr>
+						<p class="labels">% fluid A<span class="result" id="percentA">---</span></p>
+						<p class="labels">% fluid B<span class="result" id="percentB">---</span></p>
+					</div>
+					<input type="button" onclick="reset()" value="Reset">
+					<p class="smallText">
+						This calculator is based on the code from <a href="https://scriptasylum.com/rc_speed/oil_mixer.html" target="_blank">https://scriptasylum.com/rc_speed/oil_mixer.html</a>.
+					</p>
+			</div>
+			<div class="pageCtrl" id="page3"> <!-- START page 3 -->
+				<h3>RC10B6 - Gear Ratio Calulator</h3>
+				<div class="container">
+					Coming Soon
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

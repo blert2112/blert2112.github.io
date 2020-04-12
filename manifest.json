@@ -1,0 +1,21 @@
+{
+	"name": "RC Calculators",
+	"short_name": "RC Calc",
+	"description": "Various RC calculators",
+	"icons": [
+		{
+		"src": "/calc-192.png",
+		"type": "image/png",
+		"sizes": "192x192"
+		},
+		{
+		"src": "/calc-512.png",
+		"type": "image/png",
+		"sizes": "512x512"
+		}
+	],
+	"start_url": "/index.html",
+	"background_color": "#eaeaea",
+	"display": "standalone",
+	"theme_color": "#eaeaea"
+}
