@@ -34,11 +34,11 @@ input[type=button] {
 	font-weight: bold;
 }
 
-/* pill arms */
+/* pill arms
 input[type=radio] {
 	height: 2em;
 	width: 2em;
-}
+} */
 .radios {
 	display: grid;
 	grid-template-columns: auto 6em auto;
