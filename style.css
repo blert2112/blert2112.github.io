@@ -30,6 +30,9 @@ input[type=button] {
 .labelsShort {
 	margin-bottom: 0.5em;
 }
+.result {
+	font-weight: bold;
+}
 
 /* pill arms */
 input[type=radio] {
@@ -55,9 +58,6 @@ input[type=radio] {
   text-align: left;
   margin-left: 1em;
 }
-.footer {
-
-}
 
 /* oil mixing */
 input[type=text] {
@@ -66,15 +66,8 @@ input[type=text] {
 	font-size: 0.75em;
 	text-align: right;
 }
-
-
-
 .smallText {
 	font-size: x-small;
-}
-
-.result {
-	font-weight: bold;
 }
 
 /* navigation */
