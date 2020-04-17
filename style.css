@@ -40,6 +40,9 @@ input[type=number], select {
 	border-width: 0;
 	text-align: right;
 }
+select {
+	background-color: white;
+}
 select:invalid {
 	color: grey;
 }
