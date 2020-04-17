@@ -7,11 +7,11 @@
 		<link rel='stylesheet' href='style.css'>
 		<script src='script.js'></script>
 	</head>
-	<body>
+	<body onload="fillModels()">
 		<div class="naviagtion">
 			<div class="navCtrl" id="nav1" onclick="activatePage('1')">B6 Pills</div>
 			<div class="navCtrl" id="nav2" onclick="activatePage('2')">Silicone Oil Mixing</div>
-			<div class="navCtrl" id="nav3" onclick="activatePage('3')">B6 Gear Ratio</div>
+			<div class="navCtrl" id="nav3" onclick="activatePage('3')">Gear Ratio</div>
 		</div>
 		<div class="pages">
 			<div class="pageCtrl" id="page1"> <!-- START page 1 -->
@@ -100,29 +100,41 @@
 				</div>
 			</div>
 			<div class="pageCtrl" id="page2"> <!-- START page 2 -->
-					<h3>Silicone Oil Viscosity Calculator</h3>
+				<h3>Silicone Oil Viscosity Calculator</h3>
+				<div class="container">
 					<p class="smallText">
 						All values should be in centistokes (cSt). Weights (30wt, etc.) can vary by manufacturer but cSt should be standard.
 					</p>
-					<div class="container">
-						<p class="labels">Fluid A:<input type="number" id="viscA" placeholder="cSt"></p>
-						<p class="labels">Fluid B:<input type="number" id="viscB" placeholder="cSt"></p>
-						<p class="labels">Target:<input type="number" id="target" placeholder="cSt"></p>
-						<input type="button" onclick="calculateOil()" value="Calculate">
-						<hr>
-						<p class="labels">% fluid A<span class="result" id="percentA">---</span></p>
-						<p class="labels">% fluid B<span class="result" id="percentB">---</span></p>
-					</div>
-					<input type="button" onclick="resetAll()" value="Reset">
-					<p class="smallText">
-						This calculator is based on the code from <a href="https://scriptasylum.com/rc_speed/oil_mixer.html" target="_blank">https://scriptasylum.com/rc_speed/oil_mixer.html</a>.
-					</p>
+					<p class="labels">Fluid A:<input type="number" id="viscA" placeholder="cSt"></p>
+					<p class="labels">Fluid B:<input type="number" id="viscB" placeholder="cSt"></p>
+					<p class="labels">Target:<input type="number" id="target" placeholder="cSt"></p>
+					<input type="button" onclick="calculateOil(this)" value="Calculate">
+					<hr>
+					<p class="labels">% fluid A<span class="result" id="percentA">---</span></p>
+					<p class="labels">% fluid B<span class="result" id="percentB">---</span></p>
+				</div>
+				<input type="button" onclick="resetOil(this)" value="Reset">
+				<p class="smallText">
+					This calculator is based on the code from <a href="https://scriptasylum.com/rc_speed/oil_mixer.html" target="_blank">https://scriptasylum.com/rc_speed/oil_mixer.html</a>.
+				</p>
 			</div>
 			<div class="pageCtrl" id="page3"> <!-- START page 3 -->
-				<h3>RC10B6 - Gear Ratio Calulator</h3>
+				<h3>Gear Ratio Calulator</h3>
 				<div class="container">
-					Coming Soon
+					<p class="labels">Model:
+						<select required id="models">
+							<option value="" disabled selected>Select your model</option>
+						</select>
+					</p>
+					<p class="labels">Spur gear:<input type="number" id="spur" placeholder="number of teeth"></p>
+					<p class="labels">Pinion gear:<input type="number" id="pinion" placeholder="number of teeth"></p>
+					<p class="labels">Tire diameter:<input type="number" id="tire" placeholder="in, mm, cm, etc"></p>
+					<input type="button" onclick="calculateGear(this)" value="Calculate">
+					<hr>
+					<p class="labels">Final drive gear ratio:<span class="result" id="final">---</span></p>
+					<p class="labels">Roll out:<span class="result" id="rollout">---</span></p>
 				</div>
+				<input type="button" onclick="resetGear(this)" value="Reset">
 			</div>
 		</div>
 	</body>

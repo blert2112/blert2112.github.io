@@ -1,3 +1,27 @@
+//common
+function round(value, decimals) {
+	return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+}
+function validateNumber(nArr) {
+	let result = true;
+	for (let item of nArr) {
+		if (item.length == 0 || item <= 0 || isNaN(item)) {
+			result = false;
+			break;
+		}
+	}
+	return result;
+}
+function resetInput(id) {
+	document.querySelector("input[id = '" + id + "']").value = "";
+}
+function resetSelect(id) {
+	document.querySelector("select[id = '" + id + "']").selectedIndex = 0;
+}
+function resetResult(id) {
+	document.querySelector(".result[id = '" + id + "']").innerHTML = "---";
+}
+
 //pill arms
 function manageRadios(sel) {
 	//get pill position
@@ -55,65 +79,99 @@ function doPillFuncs(inArm) {
 }
 
 //oil mixing
-function resetViscosities() {
-	document.querySelector("input[id = 'viscA']").value = "";
-	document.querySelector("input[id = 'viscB']").value = "";
-	document.querySelector("input[id = 'target']").value = "";
-}
-function resetResults() {
-	document.querySelector(".result[id = 'percentA']").innerHTML = "---";
-	document.querySelector(".result[id = 'percentB']").innerHTML = "---";
-}
-function resetAll() {
-	resetViscosities();
-	resetResults();
-}
-function validate(n) {
-	let result = true,
-		i = 0;
-	while (i<3) {
-		if (n[i].length == 0 || n[i] <= 0 || isNaN(n[i])) {
-			result = false;
-			break;
-		}
-		i++;
-	}
-	return result;
-}
 function inRange(a, b, c) {
 	let min = Math.min(a, b),
 		max = Math.max(a, b);
 	return c > min && c < max;
 };
-function calculateOil() {
+function calculateOil(btnObj) {
+	btnObj.blur();
 	let viscA = document.querySelector("input[id = 'viscA']").value;
 		viscB = document.querySelector("input[id = 'viscB']").value;
 		target = document.querySelector("input[id = 'target']").value;
-	if (validate([viscA, viscB, target])) {
+	if (validateNumber([viscA, viscB, target])) {
 		if (inRange(viscA, viscB, target)) {
 			let partA = ( (Math.log(target) - Math.log(viscB)) / (Math.log(viscA) - Math.log(viscB)) ),
 				partB = 1 - partA;
-			document.querySelector(".result[id = 'percentA']").innerHTML = Math.round(partA*100);
-			document.querySelector(".result[id = 'percentB']").innerHTML = Math.round(partB*100);
+			document.querySelector(".result[id = 'percentA']").innerHTML = round(partA*100, 0);
+			document.querySelector(".result[id = 'percentB']").innerHTML = round(partB*100, 0);
 		} else {
-			resetResults();
+			resetResult('percentA');
+			resetResult('percentB');
 			alert("Target viscosity must fall between the viscosities of fluid A and fluid B!");
 		}
 	} else {
-		resetResults();
+		resetResult('percentA');
+		resetResult('percentB');
 		alert("All viscosity entries must be: \n     - A valid integer or float. \n     - Greater than zero.");
 	}
+}
+function resetOil(btnObj) {
+	btnObj.blur();
+	resetInput('viscA');
+	resetInput('viscB');
+	resetInput('target');
+	resetResult('percentA');
+	resetResult('percentB');
+}
+
+//gear ratio: spur / pinion * trans
+function fillModels() {
+	let rcModels = [
+		["ae B6",2.60],
+		["ae B6.1",2.60],
+		["ae B6.2",2.60],
+		["tlr 22",2.43]
+	];
+	let select_elem = document.querySelector("select[id = 'models']");
+	rcModels.forEach(function (item, index) {
+		let option_elem = document.createElement('option');
+		option_elem.textContent = item[0];
+		option_elem.value = item[1];
+		select_elem.appendChild(option_elem);
+	});
+}
+function calculateGear(btnObj) {
+	btnObj.blur();
+	let spur = document.querySelector("input[id = 'spur']").value,
+		pinion = document.querySelector("input[id = 'pinion']").value,
+		transmission = document.querySelector("select[id = 'models']"),
+		tire = document.querySelector("input[id = 'tire']").value;
+	if (transmission.selectedIndex > 0) {
+		if (validateNumber([spur, pinion, tire])) {
+			let finalGear = (spur / pinion) * transmission.value;
+			document.querySelector(".result[id = 'final']").innerHTML = round(finalGear, 3);
+			document.querySelector(".result[id = 'rollout']").innerHTML = round((tire * 3.1415) / finalGear, 3);
+		} else {
+			resetResult('final');
+			resetResult('rollout');
+			alert("All gear entries must be: \n     - A valid integer or float. \n     - Greater than zero.");
+		}
+	} else {
+		resetResult('final');
+		resetResult('rollout');
+		alert("Please select a model for the internal transmission gear ratio.");
+	}
+}
+function resetGear(btnObj) {
+	btnObj.blur();
+	resetSelect('models');
+	resetInput('spur');
+	resetInput('pinion');
+	resetInput('tire');
+	resetResult('final');
+	resetResult('rollout');
 }
 
 //navigation
 function activatePage(navId) {
 	// change nav border
-	let container = document.querySelectorAll(".navCtrl");
+	let container = document.querySelectorAll('.navCtrl');
 	container.forEach(function (item) {
-		item.style.borderBottom = (item.id == 'nav' + navId) ? '2px solid darkblue' : 'none';
+		item.style.color = (item.id == 'nav' + navId) ? 'var(--paper)' : 'black';
 	});
 	//switch pages
-	container = document.querySelectorAll(".pageCtrl");
+	container = document.querySelectorAll('.pageCtrl');
 	container.forEach(function (item) {
 		item.style.display = (item.id == 'page' + navId) ? 'block' : 'none';
 	});
