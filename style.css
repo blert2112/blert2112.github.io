@@ -32,6 +32,7 @@ input[type=button] {
 	margin: 0 auto;
 	border: 2px outset var(--dusty);
 	border-radius: 6px;
+	background-color: var(--paper);
 }
 input[type=number], select {
 	float: right;
