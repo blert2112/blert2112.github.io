@@ -23,6 +23,7 @@ body {
 }
 footer {
 	margin-top: auto;
+	padding-bottom: 0.5em;
 }
 span {
 	float: right;
@@ -59,7 +60,6 @@ a:active {
 a:visited {
 	color: black;
 }
-
 .smallText {
 	font-size: x-small;
 }
