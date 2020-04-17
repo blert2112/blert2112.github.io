@@ -5,10 +5,15 @@
   --overcast: #9099A2;
   --paper: #D5D5D5;
 }
+html, body {
+	height: 100%;
+}
 body {
-	background: var(--overcast);
+	display: flex;
+	flex-direction: column;
 	margin: auto;
 	padding: 0.25em 0.25em 1em 0.25em;
+	background: var(--overcast);
 	text-align: center;
 }
 @media screen and (min-width: 30em) {
@@ -16,18 +21,16 @@ body {
 		max-width: 30em;
 	}
 }
-h3 {
-	text-decoration: underline;
-
+footer {
+	margin-top: auto;
 }
 span {
 	float: right;
 }
 input[type=button] {
+	margin: 0 auto;
 	border: 2px outset var(--dusty);
 	border-radius: 6px;
-	margin: 0 auto;
-
 }
 input[type=number], select {
 	float: right;
@@ -47,15 +50,25 @@ hr {
 	border-style: ridge;
 	border-color: var(--dusty);
 }
+a:link {
+	color: black;
+}
+a:active {
+	color: var(--paper);
+}
+a:visited {
+	color: black;
+}
+
 .smallText {
 	font-size: x-small;
 }
 .container {
 	border: 1px solid black;
 	border-radius: 22px;
+	margin: 0 0.5em 1em 0.5em;
 	padding-left: 0.83em;
 	padding-right: 0.83em;
-	margin: 0 0.5em 1em 0.5em;
 	background: var(--paper);
 }
 .labels {
@@ -74,29 +87,29 @@ hr {
 	grid-template-columns: auto 6em auto;
 }
 .activeDiv {
-  grid-column: 1 / 2;
-  text-align: right;
-  margin-right: 1em;
+	grid-column: 1/2;
+	text-align: right;
+	margin-right: 1em;
 }
 .degreeDiv {
-  grid-column: 2 / 3;
-  border-left: 1px solid darkgray;
-  border-right: 1px solid darkgray;
+	grid-column: 2/3;
+	border-left: 1px solid var(--dusty);
+	border-right: 1px solid var(--dusty);
 }
 .passiveDiv {
-  grid-column: 3 / 4;
-  text-align: left;
-  margin-left: 1em;
+	grid-column: 3/4;
+	text-align: left;
+	margin-left: 1em;
 }
 
 /* navigation */
 .naviagtion {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
-	padding-left: 0.83em;
-	padding-right: 0.83em;
 	margin-left: 0.5em;
 	margin-right: 0.5em;
+	padding-left: 0.83em;
+	padding-right: 0.83em;
 	border-radius: 22px;
 	background-color: var(--lavender);
 	cursor: pointer;
