@@ -24,95 +24,62 @@ function resetResult(id) {
 
 //pill arms
 function manageRadios(sel) {
-	//get pill position
 	let pos = document.querySelector("input[name = '" + sel + "1']:checked").value;
-	//set passive pill
 	document.querySelectorAll("input[name = '" + sel + "2']").forEach(function (item) {
 		item.checked = (item.value == pos) ? true : false;
 	});
-	//get degree value
 	let deg = document.querySelector("input[name='" + sel + "_degree']:checked").value;
-	if (pos == "center_center") {
-		deg = "0";
-	} else {
-		if (deg == "0") { deg = "0.5"; }
-	}
-	//set degree value if needed
+	if (pos == "center_center") { deg = "0"; } else { if (deg == "0") { deg = "0.5"; } }
 	document.querySelectorAll("input[name='" + sel + "_degree']").forEach(function (item) {
 		item.checked = (item.value == deg) ? true : false;
 	});
 }
 function calculatePills() {
+	function quantTowAntisquat(quant, id, center, pos) {
+		if (id.includes(center)) { quant = 0; } else { if (id.includes(pos)) {quant *= -1;} }
+		return quant;
+	}
+	function quantRollPivot(quant, id, center, pos) {
+		if (id.includes(center)) {
+			quant = 0;
+		} else {
+			switch(quant) {
+				case 0.5:
+					quant = 0.35;
+					break;
+				case 1.0:
+					quant = 0.7;
+					break;
+			}
+			if (id.includes(pos)) { quant *= -1; }
+		}
+		return quant;
+	}
 	let toe = 3,
 		antiSquat = 1,
-		
-		piv = 0,
-		pivot = 0,
 		roll = 0,
-		
+		pivot = 0,
 		arm = ["c","d"],
 		pos1 = "_out",
-		pos2 = "down_",
-		deg = 0,
-		i = 0;
-	//first pass C arm, second pass D arm
-	while (arm[i]) {
-		if (arm[i]=="d") {
+		pos2 = "down_";
+	arm.forEach (function(item, index) {
+		if (index == 1) {
 			pos1 = "_in";
 			pos2 = "up_";
 		}
-		let rbID = document.querySelector("input[name='" + arm[i] + "1']:checked").value;
-		let val = parseFloat(document.querySelector("input[name='" + arm[i] + "_degree']:checked").value);
-		//calculate toe
-		deg = val;
-		if (rbID.includes("_center")) { deg = 0; }
-			else { if (rbID.includes(pos1)) {deg *= -1;} }
-		toe += deg;
-		//calculate antisquat
-		deg = val;
-		if (rbID.includes("center_")) { deg = 0; }
-			else { if (rbID.includes(pos2)) {deg *= -1;} }
-		antiSquat += deg;
-		//calculate pivot
-		if (rbID.includes("_center")) {
-			piv = 0;
-		} else {
-			switch(val) {
-				case 0.5:
-					piv = 0.35;
-					break;
-				case 1.0:
-					piv = 0.7;
-					break;
-			}
-			if (rbID.includes("_in")) { piv *= -1; }
-		}
-		pivot += piv;
-		
-		//calculate roll center
-		if (rbID.includes("center_")) {
-			piv = 0;
-		} else {
-			switch(val) {
-				case 0.5:
-					piv = 0.35;
-					break;
-				case 1.0:
-					piv = 0.7;
-					break;
-			}
-			if (rbID.includes("down_")) { piv *= -1; }
-		}
-		roll += piv;
-		
-		
-		i++;
-	}
+		let rbID = document.querySelector("input[name='" + item + "1']:checked").value;
+		let rbVal = parseFloat(document.querySelector("input[name='" + item + "_degree']:checked").value);
+		toe += quantTowAntisquat(rbVal, rbID, "_center", pos1);
+		antiSquat += quantTowAntisquat(rbVal, rbID, "center_", pos2);
+		pivot += quantRollPivot(rbVal, rbID, "_center", "_in");
+		roll += quantRollPivot(rbVal, rbID, "center_", "down_");
+	})
 	document.querySelector(".result[id='toe']").innerHTML = toe;
 	document.querySelector(".result[id='antisquat']").innerHTML = antiSquat;
 	document.querySelector(".result[id='roll']").innerHTML = round(roll/2, 3);
 	document.querySelector(".result[id='pivot']").innerHTML = round(pivot/2, 3);
 }
+
 function doPillFuncs(inArm) {
 	manageRadios(inArm);
 	calculatePills();
