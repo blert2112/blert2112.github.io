@@ -48,6 +48,7 @@ function calculatePills() {
 		
 		piv = 0,
 		pivot = 0,
+		roll = 0,
 		
 		arm = ["c","d"],
 		pos1 = "_out",
@@ -87,11 +88,30 @@ function calculatePills() {
 			if (rbID.includes("_in")) { piv *= -1; }
 		}
 		pivot += piv;
+		
+		//calculate roll center
+		if (rbID.includes("center_")) {
+			piv = 0;
+		} else {
+			switch(val) {
+				case 0.5:
+					piv = 0.35;
+					break;
+				case 1.0:
+					piv = 0.7;
+					break;
+			}
+			if (rbID.includes("down_")) { piv *= -1; }
+		}
+		roll += piv;
+		
+		
 		i++;
 	}
 	document.querySelector(".result[id='toe']").innerHTML = toe;
 	document.querySelector(".result[id='antisquat']").innerHTML = antiSquat;
-	document.querySelector(".result[id='pivot']").innerHTML = round( pivot/2, 3 );
+	document.querySelector(".result[id='roll']").innerHTML = round(roll/2, 3);
+	document.querySelector(".result[id='pivot']").innerHTML = round(pivot/2, 3);
 }
 function doPillFuncs(inArm) {
 	manageRadios(inArm);
