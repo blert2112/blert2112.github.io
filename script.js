@@ -45,6 +45,10 @@ function manageRadios(sel) {
 function calculatePills() {
 	let toe = 3,
 		antiSquat = 1,
+		
+		piv = 0,
+		pivot = 0,
+		
 		arm = ["c","d"],
 		pos1 = "_out",
 		pos2 = "down_",
@@ -68,10 +72,26 @@ function calculatePills() {
 		if (rbID.includes("center_")) { deg = 0; }
 			else { if (rbID.includes(pos2)) {deg *= -1;} }
 		antiSquat += deg;
+		//calculate pivot
+		if (rbID.includes("_center")) {
+			piv = 0;
+		} else {
+			switch(val) {
+				case 0.5:
+					piv = 0.35;
+					break;
+				case 1.0:
+					piv = 0.7;
+					break;
+			}
+			if (rbID.includes("_in")) { piv *= -1; }
+		}
+		pivot += piv;
 		i++;
 	}
 	document.querySelector(".result[id='toe']").innerHTML = toe;
 	document.querySelector(".result[id='antisquat']").innerHTML = antiSquat;
+	document.querySelector(".result[id='pivot']").innerHTML = round( pivot/2, 3 );
 }
 function doPillFuncs(inArm) {
 	manageRadios(inArm);
