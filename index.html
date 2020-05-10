@@ -19,75 +19,83 @@
 				<div class="container">
 					<p class="labels labelsShort">C-arm:</p>
 					<div class="radios">
-						<div class="activeDiv" onclick="doPillFuncs('c')">
-							<input type="radio" name="c1" value="up_out">
-							<input type="radio" name="c1" value="up_center">
-							<input type="radio" name="c1" value="up_in">
+						<div class="activeDiv" onclick="doPillFuncs('cL')">
+							<input type="radio" name="cL" value="up_out">
+							<input type="radio" name="cL" value="up_center">
+							<input type="radio" name="cL" value="up_in">
 							<br>
-							<input type="radio" name="c1" value="center_out">
-							<input type="radio" name="c1" value="center_center" checked>
-							<input type="radio" name="c1" value="center_in">
+							<input type="radio" name="cL" value="center_out">
+							<input type="radio" name="cL" value="center_center" checked>
+							<input type="radio" name="cL" value="center_in">
 							<br>
-							<input type="radio" name="c1" value="down_out">
-							<input type="radio" name="c1" value="down_center">
-							<input type="radio" name="c1" value="down_in">
+							<input type="radio" name="cL" value="down_out">
+							<input type="radio" name="cL" value="down_center">
+							<input type="radio" name="cL" value="down_in">
 						</div>
 						<div class="degreeDiv" onclick="doPillFuncs('c')">
-							<input type="radio" name="c_degree" value="0" checked disabled>0.0&deg;
+							<input type="radio" name="c_degree" value="0" checked>0.0&deg;
 							<br>
-							<input type="radio" name="c_degree" value="0.5">0.5&deg;
+							<input type="radio" name="c_degree" value="0.5" disabled>0.5&deg;
 							<br>
-							<input type="radio" name="c_degree" value="1">1.0&deg;
+							<input type="radio" name="c_degree" value="1" disabled>1.0&deg;
+							<br>
+							<input type="radio" name="c_degree" value="1.5L" disabled>1/.5&deg; L
+							<br>
+							<input type="radio" name="c_degree" value="1.5R" disabled>1/.5&deg; R
 						</div>
-						<div class="passiveDiv" onclick="return false;">
-							<input type="radio" name="c2" value="up_in">
-							<input type="radio" name="c2" value="up_center">
-							<input type="radio" name="c2" value="up_out">
+						<div class="passiveDiv" onclick="doPillFuncs('cR')">
+							<input type="radio" name="cR" value="up_in">
+							<input type="radio" name="cR" value="up_center">
+							<input type="radio" name="cR" value="up_out">
 							<br>
-							<input type="radio" name="c2" value="center_in">
-							<input type="radio" name="c2" value="center_center" checked>
-							<input type="radio" name="c2" value="center_out">
+							<input type="radio" name="cR" value="center_in">
+							<input type="radio" name="cR" value="center_center" checked>
+							<input type="radio" name="cR" value="center_out">
 							<br>
-							<input type="radio" name="c2" value="down_in">
-							<input type="radio" name="c2" value="down_center">
-							<input type="radio" name="c2" value="down_out">
+							<input type="radio" name="cR" value="down_in">
+							<input type="radio" name="cR" value="down_center">
+							<input type="radio" name="cR" value="down_out">
 						</div>
 					</div>
 					<hr>
 					<p class="labels labelsShort">D-arm:</p>
 					<div class="radios">
-						<div class="activeDiv" onclick="doPillFuncs('d')">
-							<input type="radio" name="d1" value="up_out">
-							<input type="radio" name="d1" value="up_center">
-							<input type="radio" name="d1" value="up_in">
+						<div class="activeDiv" onclick="doPillFuncs('dL')">
+							<input type="radio" name="dL" value="up_out">
+							<input type="radio" name="dL" value="up_center">
+							<input type="radio" name="dL" value="up_in">
 							<br>
-							<input type="radio" name="d1" value="center_out">
-							<input type="radio" name="d1" value="center_center" checked>
-							<input type="radio" name="d1" value="center_in">
+							<input type="radio" name="dL" value="center_out">
+							<input type="radio" name="dL" value="center_center" checked>
+							<input type="radio" name="dL" value="center_in">
 							<br>
-							<input type="radio" name="d1" value="down_out">
-							<input type="radio" name="d1" value="down_center">
-							<input type="radio" name="d1" value="down_in">
+							<input type="radio" name="dL" value="down_out">
+							<input type="radio" name="dL" value="down_center">
+							<input type="radio" name="dL" value="down_in">
 						</div>
 						<div class="degreeDiv" onclick="doPillFuncs('d')">
-							<input type="radio" name="d_degree" value="0" checked disabled>0.0&deg;
+							<input type="radio" name="d_degree" value="0" checked>0.0&deg;
 							<br>
-							<input type="radio" name="d_degree" value="0.5">0.5&deg;
+							<input type="radio" name="d_degree" value="0.5" disabled>0.5&deg;
 							<br>
-							<input type="radio" name="d_degree" value="1">1.0&deg;
+							<input type="radio" name="d_degree" value="1" disabled>1.0&deg;
+							<br>
+							<input type="radio" name="d_degree" value="1.5L" disabled>1/.5&deg; L
+							<br>
+							<input type="radio" name="d_degree" value="1.5R" disabled>1/.5&deg; R
 						</div>
-						<div class="passiveDiv" onclick="return false;">
-							<input type="radio" name="d2" value="up_in">
-							<input type="radio" name="d2" value="up_center">
-							<input type="radio" name="d2" value="up_out">
+						<div class="passiveDiv" onclick="doPillFuncs('dR')">
+							<input type="radio" name="dR" value="up_in">
+							<input type="radio" name="dR" value="up_center">
+							<input type="radio" name="dR" value="up_out">
 							<br>
-							<input type="radio" name="d2" value="center_in">
-							<input type="radio" name="d2" value="center_center" checked>
-							<input type="radio" name="d2" value="center_out">
+							<input type="radio" name="dR" value="center_in">
+							<input type="radio" name="dR" value="center_center" checked>
+							<input type="radio" name="dR" value="center_out">
 							<br>
-							<input type="radio" name="d2" value="down_in">
-							<input type="radio" name="d2" value="down_center">
-							<input type="radio" name="d2" value="down_out">
+							<input type="radio" name="dR" value="down_in">
+							<input type="radio" name="dR" value="down_center">
+							<input type="radio" name="dR" value="down_out">
 						</div>
 					</div>
 					<hr>

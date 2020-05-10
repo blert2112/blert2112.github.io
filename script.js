@@ -12,6 +12,11 @@ function validateNumber(nArr) {
 	}
 	return result;
 }
+function inRange(a, b, c) {
+	let min = Math.min(a, b),
+		max = Math.max(a, b);
+	return c > min && c < max;
+};
 function resetInput(id) {
 	document.querySelector("input[id = '" + id + "']").value = "";
 }
@@ -24,35 +29,70 @@ function resetResult(id) {
 
 //pill arms
 function manageRadios(sel) {
-	let pos = document.querySelector("input[name = '" + sel + "1']:checked").value;
-	document.querySelectorAll("input[name = '" + sel + "2']").forEach(function (item) {
-		item.checked = (item.value == pos) ? true : false;
-	});
-	let deg = document.querySelector("input[name='" + sel + "_degree']:checked").value;
-	if (pos == "center_center") { deg = "0"; } else { if (deg == "0") { deg = "0.5"; } }
-	document.querySelectorAll("input[name='" + sel + "_degree']").forEach(function (item) {
-		item.checked = (item.value == deg) ? true : false;
-	});
+	let arm = sel.charAt(0);
+	let arm1 = sel;
+	let arm2 = arm + "R";
+	if (arm1.length == 1) arm1 += "L";
+	if (arm1.charAt(1) == "R") arm2 = arm + "L";
+	//match right and left
+	let pos = document.querySelector("input[name = '" + arm1 + "']:checked").value;
+	document.querySelector("input[name='" + arm2 + "'][value='" + pos + "']").checked = true;
+	//manage degrees
+	let degRads = document.querySelectorAll("input[name='" + arm + "_degree']");
+	if (pos == "center_center") {
+		degRads[0].checked = true;
+		degRads[0].disabled = false;
+		degRads[1].disabled = true;
+		degRads[2].disabled = true;
+		degRads[3].disabled = true;
+		degRads[4].disabled = true;
+	} else {
+		if (degRads[0].checked == true) degRads[1].checked = true;
+		if (pos.includes("center")) {
+			if (degRads[3].checked == true || degRads[4].checked == true) {degRads[1].checked = true;}
+			degRads[0].disabled = true;
+			degRads[1].disabled = false;
+			degRads[2].disabled = false;
+			degRads[3].disabled = true;
+			degRads[4].disabled = true;
+		} else {
+			degRads[0].disabled = true;
+			degRads[1].disabled = false;
+			degRads[2].disabled = false;
+			degRads[3].disabled = false;
+			degRads[4].disabled = false;
+		}
+	}
 }
 function calculatePills() {
-	function quantTowAntisquat(quant, id, center, pos) {
-		if (id.includes(center)) { quant = 0; } else { if (id.includes(pos)) {quant *= -1;} }
-		return quant;
-	}
-	function quantRollPivot(quant, id, center, pos) {
+	function calcDegree(quant, id, center, pos) {
 		if (id.includes(center)) {
 			quant = 0;
 		} else {
-			switch(quant) {
-				case 0.5:
-					quant = 0.35;
+			let t = quant.charAt(quant.length - 1);
+			switch (true) {
+				case (t == "L") && (id == "up_out" || id == "down_in"):
+					if (center == "_center") quant = 0.5; else quant = 1;
 					break;
-				case 1.0:
-					quant = 0.7;
+				case (t == "L") && (id == "down_out" || id == "up_in"):
+					if (center == "_center") quant = 1; else quant = 0.5;
 					break;
+				case (t == "R") && (id == "up_out" || id == "down_in"):
+					if (center == "_center") quant = 1; else quant = 0.5;
+					break;
+				case (t == "R") && (id == "down_out" || id == "up_in"):
+					if (center == "_center") quant = 0.5; else quant = 1;
 			}
-			if (id.includes(pos)) { quant *= -1; }
 		}
+		quant = parseFloat(quant);
+		if (id.includes(pos)) quant *= -1;
+		return quant;
+	}
+	function quantRollPivot(quant, id, center, pos) {
+		quant = Math.abs(calcDegree(quant, id, center, pos));
+		if (quant == 0.5) quant = 0.35;
+		else if (quant == 1.0) quant = 0.7;
+		if (id.includes(pos)) quant *= -1;
 		return quant;
 	}
 	let toe = 3,
@@ -67,10 +107,10 @@ function calculatePills() {
 			pos1 = "_in";
 			pos2 = "up_";
 		}
-		let rbID = document.querySelector("input[name='" + item + "1']:checked").value;
-		let rbVal = parseFloat(document.querySelector("input[name='" + item + "_degree']:checked").value);
-		toe += quantTowAntisquat(rbVal, rbID, "_center", pos1);
-		antiSquat += quantTowAntisquat(rbVal, rbID, "center_", pos2);
+		let rbID = document.querySelector("input[name='" + item + "L']:checked").value;
+		let rbVal = document.querySelector("input[name='" + item + "_degree']:checked").value;
+		toe += calcDegree(rbVal, rbID, "_center", pos1);
+		antiSquat += calcDegree(rbVal, rbID, "center_", pos2);
 		pivot += quantRollPivot(rbVal, rbID, "_center", "_in");
 		roll += quantRollPivot(rbVal, rbID, "center_", "down_");
 	})
@@ -79,18 +119,12 @@ function calculatePills() {
 	document.querySelector(".result[id='roll']").innerHTML = round(roll/2, 3);
 	document.querySelector(".result[id='pivot']").innerHTML = round(pivot/2, 3);
 }
-
 function doPillFuncs(inArm) {
 	manageRadios(inArm);
 	calculatePills();
 }
 
 //oil mixing
-function inRange(a, b, c) {
-	let min = Math.min(a, b),
-		max = Math.max(a, b);
-	return c > min && c < max;
-};
 function calculateOil(btnObj) {
 	btnObj.blur();
 	let viscA = document.querySelector("input[id = 'viscA']").value;
