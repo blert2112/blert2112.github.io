@@ -28,6 +28,9 @@ footer {
 span {
 	float: right;
 }
+input[type=radio] {
+	background-color: white;
+}
 input[type=button] {
 	margin: 0 auto;
 	border: 2px outset var(--dusty);
