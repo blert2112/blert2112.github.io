@@ -28,17 +28,20 @@ function resetResult(id) {
 }
 
 //pill arms
+
 function manageRadios(sel) {
-	let arm = sel.charAt(0);
-	let arm1 = sel;
-	let arm2 = arm + "R";
-	if (arm1.length == 1) arm1 += "L";
-	if (arm1.charAt(1) == "R") arm2 = arm + "L";
-	//match right and left
+	let arm1 = sel + "L";
+	let arm2 = sel + "R";
+	//get selected position
 	let pos = document.querySelector("input[name = '" + arm1 + "']:checked").value;
-	document.querySelector("input[name='" + arm2 + "'][value='" + pos + "']").checked = true;
+	//select passive arm
+	document.querySelector("input[name='" + arm2 + "']:checked").disabled = true;
+	let passive = document.querySelector("input[name='" + arm2 + "'][value='" + pos + "']");
+	passive.checked = true;
+	passive.disabled = false;
 	//manage degrees
-	let degRads = document.querySelectorAll("input[name='" + arm + "_degree']");
+	let degRads = document.querySelectorAll("input[name='" + sel + "_degree']");
+	passive = document.querySelectorAll("input[name='" + sel + "_degreeR']");
 	if (pos == "center_center") {
 		degRads[0].checked = true;
 		degRads[0].disabled = false;
@@ -46,21 +49,48 @@ function manageRadios(sel) {
 		degRads[2].disabled = true;
 		degRads[3].disabled = true;
 		degRads[4].disabled = true;
+		passive[0].checked = false;
+		passive[0].disabled = true;
+		passive[1].checked = false;
+		passive[1].disabled = true;
 	} else {
 		if (degRads[0].checked == true) degRads[1].checked = true;
+		else if (degRads[3].checked == false || degRads[4].checked == false) {
+			passive[0].checked = false;
+			passive[0].disabled = true;
+			passive[1].checked = false;
+			passive[1].disabled = true;
+		}
 		if (pos.includes("center")) {
-			if (degRads[3].checked == true || degRads[4].checked == true) {degRads[1].checked = true;}
 			degRads[0].disabled = true;
 			degRads[1].disabled = false;
 			degRads[2].disabled = false;
 			degRads[3].disabled = true;
 			degRads[4].disabled = true;
+			passive[0].checked = false;
+			passive[0].disabled = true;
+			passive[1].checked = false;
+			passive[1].disabled = true;
+			if (degRads[3].checked == true || degRads[4].checked == true) degRads[1].checked = true;
 		} else {
 			degRads[0].disabled = true;
 			degRads[1].disabled = false;
 			degRads[2].disabled = false;
 			degRads[3].disabled = false;
 			degRads[4].disabled = false;
+			if (degRads[3].checked == true || degRads[4].checked == true) {
+				if (degRads[3].checked == true) {
+					passive[0].checked = true;
+					passive[0].disabled = false;
+					passive[1].disabled = true;
+				} else {
+					passive[1].checked = true;
+					passive[1].disabled = false;
+					passive[0].disabled = true;
+				}
+						
+
+			}
 		}
 	}
 }

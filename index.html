@@ -19,7 +19,7 @@
 				<div class="container">
 					<p class="labels labelsShort">C-arm:</p>
 					<div class="radios">
-						<div class="activeDiv" onclick="doPillFuncs('cL')">
+						<div class="activeArm" onclick="doPillFuncs('c')">
 							<input type="radio" name="cL" value="up_out">
 							<input type="radio" name="cL" value="up_center">
 							<input type="radio" name="cL" value="up_in">
@@ -32,35 +32,41 @@
 							<input type="radio" name="cL" value="down_center">
 							<input type="radio" name="cL" value="down_in">
 						</div>
-						<div class="degreeDiv" onclick="doPillFuncs('c')">
+						<div class="degreeOrig" onclick="doPillFuncs('c')">
 							<input type="radio" name="c_degree" value="0" checked>0.0&deg;
 							<br>
 							<input type="radio" name="c_degree" value="0.5" disabled>0.5&deg;
 							<br>
 							<input type="radio" name="c_degree" value="1" disabled>1.0&deg;
-							<br>
-							<input type="radio" name="c_degree" value="1.5L" disabled>1/.5&deg; L
-							<br>
-							<input type="radio" name="c_degree" value="1.5R" disabled>1/.5&deg; R
 						</div>
-						<div class="passiveDiv" onclick="doPillFuncs('cR')">
-							<input type="radio" name="cR" value="up_in">
-							<input type="radio" name="cR" value="up_center">
-							<input type="radio" name="cR" value="up_out">
+						<div class="passiveArm">
+							<input type="radio" name="cR" value="up_in" disabled>
+							<input type="radio" name="cR" value="up_center" disabled>
+							<input type="radio" name="cR" value="up_out" disabled>
 							<br>
-							<input type="radio" name="cR" value="center_in">
+							<input type="radio" name="cR" value="center_in" disabled>
 							<input type="radio" name="cR" value="center_center" checked>
-							<input type="radio" name="cR" value="center_out">
+							<input type="radio" name="cR" value="center_out" disabled>
 							<br>
-							<input type="radio" name="cR" value="down_in">
-							<input type="radio" name="cR" value="down_center">
-							<input type="radio" name="cR" value="down_out">
+							<input type="radio" name="cR" value="down_in" disabled>
+							<input type="radio" name="cR" value="down_center" disabled>
+							<input type="radio" name="cR" value="down_out" disabled>
+						</div>
+						<div class="degreeNew1 degreeCom" onclick="doPillFuncs('c')">
+							1/.5&deg; T1 (R)<input type="radio" name="c_degree" value="1.5R" disabled>
+							<br>
+							1/.5&deg; T2 (L)<input type="radio" name="c_degree" value="1.5L" disabled>
+						</div>
+						<div class="degreeNew2 degreeCom">
+							<input type="radio" name="c_degreeR" value="1.5L" disabled>1/.5&deg; T2 (L)
+							<br>
+							<input type="radio" name="c_degreeR" value="1.5R" disabled>1/.5&deg; T1 (R)
 						</div>
 					</div>
 					<hr>
 					<p class="labels labelsShort">D-arm:</p>
 					<div class="radios">
-						<div class="activeDiv" onclick="doPillFuncs('dL')">
+						<div class="activeArm" onclick="doPillFuncs('d')">
 							<input type="radio" name="dL" value="up_out">
 							<input type="radio" name="dL" value="up_center">
 							<input type="radio" name="dL" value="up_in">
@@ -73,29 +79,35 @@
 							<input type="radio" name="dL" value="down_center">
 							<input type="radio" name="dL" value="down_in">
 						</div>
-						<div class="degreeDiv" onclick="doPillFuncs('d')">
+						<div class="degreeOrig" onclick="doPillFuncs('d')">
 							<input type="radio" name="d_degree" value="0" checked>0.0&deg;
 							<br>
 							<input type="radio" name="d_degree" value="0.5" disabled>0.5&deg;
 							<br>
 							<input type="radio" name="d_degree" value="1" disabled>1.0&deg;
-							<br>
-							<input type="radio" name="d_degree" value="1.5L" disabled>1/.5&deg; L
-							<br>
-							<input type="radio" name="d_degree" value="1.5R" disabled>1/.5&deg; R
 						</div>
-						<div class="passiveDiv" onclick="doPillFuncs('dR')">
-							<input type="radio" name="dR" value="up_in">
-							<input type="radio" name="dR" value="up_center">
-							<input type="radio" name="dR" value="up_out">
+						<div class="passiveArm">
+							<input type="radio" name="dR" value="up_in" disabled>
+							<input type="radio" name="dR" value="up_center" disabled>
+							<input type="radio" name="dR" value="up_out" disabled>
 							<br>
-							<input type="radio" name="dR" value="center_in">
+							<input type="radio" name="dR" value="center_in" disabled>
 							<input type="radio" name="dR" value="center_center" checked>
-							<input type="radio" name="dR" value="center_out">
+							<input type="radio" name="dR" value="center_out" disabled>
 							<br>
-							<input type="radio" name="dR" value="down_in">
-							<input type="radio" name="dR" value="down_center">
-							<input type="radio" name="dR" value="down_out">
+							<input type="radio" name="dR" value="down_in" disabled>
+							<input type="radio" name="dR" value="down_center" disabled>
+							<input type="radio" name="dR" value="down_out" disabled>
+						</div>
+						<div class="degreeNew1 degreeCom" onclick="doPillFuncs('d')">
+							1/.5&deg; T1 (R)<input type="radio" name="d_degree" value="1.5R" disabled>
+							<br>
+							1/.5&deg; T1 (L)<input type="radio" name="d_degree" value="1.5L" disabled>
+						</div>
+						<div class="degreeNew2 degreeCom">
+							<input type="radio" name="d_degreeR" value="1.5L" disabled>1/.5&deg; T1 (L)
+							<br>
+							<input type="radio" name="d_degreeR" value="1.5R" disabled>1/.5&deg; T1 (R)
 						</div>
 					</div>
 					<hr>
