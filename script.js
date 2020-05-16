@@ -190,8 +190,6 @@ function resetOil(btnObj) {
 function fillModels() {
 	let rcModels = [
 		["ae B6",2.60],
-		["ae B6.1",2.60],
-		["ae B6.2",2.60],
 		["tlr 22",2.43],
 		["xray xb2",2.65]
 	];
