@@ -1,6 +1,77 @@
 //common
-function round(value, decimals) {
-	return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
+const rcModels = [
+	{
+		modelName : "ae b6",
+		internalGear : 2.60,
+		initToe : 3,
+		initAntiSquat : 1,
+		halfDegToMM : 0.35,
+		oneDegToMM : 0.7
+	},
+	{
+		modelName : "tlr 22",
+		internalGear : 2.43,
+		initToe : -1,
+		initAntiSquat : -1,
+		halfDegToMM : -1,
+		oneDegToMM : -1
+	},
+	{
+		modelName : "xray xb2",
+		internalGear : 2.65,
+		initToe : 3,
+		initAntiSquat : 2,
+		halfDegToMM : 0.375,
+		oneDegToMM : 0.75
+	}
+]
+
+//on load
+function bodyOnLoad() {
+//fill model selectors
+	let gears = document.querySelector("select[id = 'modelsGears']");
+	let pills = document.querySelector("select[id = 'modelsPills']");
+	rcModels.forEach(function (item, index) {
+		//fill gears select input
+		let opt = document.createElement('option');
+		opt.textContent = item.modelName;
+		opt.value = index;
+		gears.appendChild(opt);
+		//fill pills select input
+		if (item.initToe != -1) {
+			opt = document.createElement('option');
+			opt.textContent = item.modelName;
+			opt.value = index;
+			pills.appendChild(opt);
+		}
+	});
+	resetResult("toe", rcModels[0].initToe);
+	resetResult("antisquat", rcModels[0].initAntiSquat);
+}
+
+//navigation
+function activatePage(id) {
+	// change nav border
+	let container = document.querySelectorAll('.navCtrl');
+	container.forEach(function (item) {
+		item.style.color = (item.id == 'nav' + id) ? 'var(--paper)' : 'black';
+	});
+	//switch pages
+	container = document.querySelectorAll('.pageCtrl');
+	container.forEach(function (item) {
+		item.style.display = (item.id == 'page' + id) ? 'block' : 'none';
+	});
+}
+
+//support
+function resetInput(id) {
+	document.querySelector("input[id = '" + id + "']").value = "";
+}
+function resetResult(id, val) {
+	document.querySelector(".result[id = '" + id + "']").innerHTML = val;
+}
+function round(val, deci) {
+	return Number(Math.round(val + 'e' + deci) + 'e-' + deci);
 }
 function validateNumber(nArr) {
 	let result = true;
@@ -17,82 +88,79 @@ function inRange(a, b, c) {
 		max = Math.max(a, b);
 	return c > min && c < max;
 };
-function resetInput(id) {
-	document.querySelector("input[id = '" + id + "']").value = "";
-}
-function resetSelect(id) {
-	document.querySelector("select[id = '" + id + "']").selectedIndex = 0;
-}
-function resetResult(id) {
-	document.querySelector(".result[id = '" + id + "']").innerHTML = "---";
-}
 
 //pill arms
-
-function manageRadios(sel) {
-	let arm1 = sel + "L";
-	let arm2 = sel + "R";
-	//get selected position
-	let pos = document.querySelector("input[name = '" + arm1 + "']:checked").value;
-	//select passive arm
-	document.querySelector("input[name='" + arm2 + "']:checked").disabled = true;
-	let passive = document.querySelector("input[name='" + arm2 + "'][value='" + pos + "']");
-	passive.checked = true;
-	passive.disabled = false;
-	//manage degrees
-	let degRads = document.querySelectorAll("input[name='" + sel + "_degree']");
-	passive = document.querySelectorAll("input[name='" + sel + "_degreeR']");
-	if (pos == "center_center") {
-		degRads[0].checked = true;
-		degRads[0].disabled = false;
-		degRads[1].disabled = true;
-		degRads[2].disabled = true;
-		degRads[3].disabled = true;
-		degRads[4].disabled = true;
-		passive[0].checked = false;
-		passive[0].disabled = true;
-		passive[1].checked = false;
-		passive[1].disabled = true;
-	} else {
-		if (degRads[0].checked == true) degRads[1].checked = true;
-		else if (degRads[3].checked == false || degRads[4].checked == false) {
-			passive[0].checked = false;
-			passive[0].disabled = true;
-			passive[1].checked = false;
-			passive[1].disabled = true;
-		}
-		if (pos.includes("center")) {
-			degRads[0].disabled = true;
-			degRads[1].disabled = false;
-			degRads[2].disabled = false;
+function setModelValues(that) {
+	resetResult("toe", rcModels[that.value].initToe);
+	resetResult("antisquat", rcModels[that.value].initAntiSquat);
+	resetResult("roll", 0);
+	resetResult("pivot", 0);
+	let rad = document.querySelector("input[name='c'][value='center_center']");
+	rad.checked = true;
+	rad.onchange(); //lower case only, 'onChange' will error
+	rad = document.querySelector("input[name='d'][value='center_center']");
+	rad.checked = true;
+	rad.onchange(); //lower case only, 'onChange' will error
+}
+function manageRadios(that) {
+	let iName = "input[name='" + that.name;
+	if (that.name.length == 1) {
+		//disable current passive
+		document.querySelector(iName + "_passive']:checked").disabled = true;
+		//set new passive arm
+		let rad = document.querySelector(iName + "_passive'][value='" + that.value + "']");
+		rad.checked = true;
+		rad.disabled = false;
+		let degRads = document.querySelectorAll(iName + "_degree']");
+		let degPass = document.querySelectorAll(iName + "_degree_passive']");
+		if (that.value == "center_center") {
+			degRads[0].checked = true;
+			degRads[0].disabled = false;
+			degRads[1].disabled = true;
+			degRads[2].disabled = true;
 			degRads[3].disabled = true;
 			degRads[4].disabled = true;
-			passive[0].checked = false;
-			passive[0].disabled = true;
-			passive[1].checked = false;
-			passive[1].disabled = true;
-			if (degRads[3].checked == true || degRads[4].checked == true) degRads[1].checked = true;
+			degPass[0].checked = false;
+			degPass[0].disabled = true;
+			degPass[1].checked = false;
+			degPass[1].disabled = true;
 		} else {
+			if (degRads[0].checked == true) degRads[1].checked = true;
 			degRads[0].disabled = true;
 			degRads[1].disabled = false;
 			degRads[2].disabled = false;
-			degRads[3].disabled = false;
-			degRads[4].disabled = false;
-			if (degRads[3].checked == true || degRads[4].checked == true) {
-				if (degRads[3].checked == true) {
-					passive[0].checked = true;
-					passive[0].disabled = false;
-					passive[1].disabled = true;
-				} else {
-					passive[1].checked = true;
-					passive[1].disabled = false;
-					passive[0].disabled = true;
-				}
-						
-
+			if (that.value.includes("center")) {
+				if (degRads[3].checked == true || degRads[4].checked == true) degRads[1].checked = true;
+				degRads[3].disabled = true;
+				degRads[4].disabled = true;
+				degPass[0].checked = false;
+				degPass[0].disabled = true;
+				degPass[1].checked = false;
+				degPass[1].disabled = true;
+			} else {
+				degRads[3].disabled = false;
+				degRads[4].disabled = false;
 			}
 		}
+	} else {
+		let degRads = document.querySelectorAll(iName + "']");
+		let degPass = document.querySelectorAll(iName + "_passive']");
+		if (degRads[3].checked == true) {
+			degPass[0].checked = true;
+			degPass[0].disabled = false;
+			degPass[1].disabled = true;
+		} else if (degRads[4].checked == true) {
+			degPass[1].checked = true;
+			degPass[1].disabled = false;
+			degPass[0].disabled = true;
+		} else {
+			degPass[0].checked = false;
+			degPass[0].disabled = true;
+			degPass[1].checked = false;
+			degPass[1].disabled = true;
+		}
 	}
+	calculatePills();
 }
 function calculatePills() {
 	function calcDegree(quant, id, center, pos) {
@@ -118,15 +186,16 @@ function calculatePills() {
 		if (id.includes(pos)) quant *= -1;
 		return quant;
 	}
-	function quantRollPivot(quant, id, center, pos) {
+	function calcRollPivot(quant, id, center, pos, index) {
 		quant = Math.abs(calcDegree(quant, id, center, pos));
-		if (quant == 0.5) quant = 0.35;
-		else if (quant == 1.0) quant = 0.7;
+		if (quant == 0.5) quant = rcModels[index].halfDegToMM;
+		else if (quant == 1.0) quant = rcModels[index].oneDegToMM;
 		if (id.includes(pos)) quant *= -1;
 		return quant;
 	}
-	let toe = 3,
-		antiSquat = 1,
+	let selIndex = document.querySelector("select[id = 'modelsPills']").value,
+		toe = rcModels[selIndex].initToe,
+		antiSquat = rcModels[selIndex].initAntiSquat,
 		roll = 0,
 		pivot = 0,
 		arm = ["c","d"],
@@ -137,21 +206,17 @@ function calculatePills() {
 			pos1 = "_in";
 			pos2 = "up_";
 		}
-		let rbID = document.querySelector("input[name='" + item + "L']:checked").value;
+		let rbID = document.querySelector("input[name='" + item + "']:checked").value;
 		let rbVal = document.querySelector("input[name='" + item + "_degree']:checked").value;
 		toe += calcDegree(rbVal, rbID, "_center", pos1);
 		antiSquat += calcDegree(rbVal, rbID, "center_", pos2);
-		pivot += quantRollPivot(rbVal, rbID, "_center", "_in");
-		roll += quantRollPivot(rbVal, rbID, "center_", "down_");
+		pivot += calcRollPivot(rbVal, rbID, "_center", "_in", selIndex);
+		roll += calcRollPivot(rbVal, rbID, "center_", "down_", selIndex);
 	})
-	document.querySelector(".result[id='toe']").innerHTML = toe;
-	document.querySelector(".result[id='antisquat']").innerHTML = antiSquat;
-	document.querySelector(".result[id='roll']").innerHTML = round(roll/2, 3);
-	document.querySelector(".result[id='pivot']").innerHTML = round(pivot/2, 3);
-}
-function doPillFuncs(inArm) {
-	manageRadios(inArm);
-	calculatePills();
+	resetResult("toe", toe);
+	resetResult("antisquat", antiSquat);
+	resetResult("roll", round(roll/2, 3));
+	resetResult("pivot", round(pivot/2, 3));
 }
 
 //oil mixing
@@ -187,25 +252,11 @@ function resetOil(btnObj) {
 }
 
 //gear ratio: spur / pinion * trans
-function fillModels() {
-	let rcModels = [
-		["ae B6",2.60],
-		["tlr 22",2.43],
-		["xray xb2",2.65]
-	];
-	let select_elem = document.querySelector("select[id = 'models']");
-	rcModels.forEach(function (item, index) {
-		let option_elem = document.createElement('option');
-		option_elem.textContent = item[0];
-		option_elem.value = item[1];
-		select_elem.appendChild(option_elem);
-	});
-}
 function calculateGear(btnObj) {
 	btnObj.blur();
 	let spur = document.querySelector("input[id = 'spur']").value,
 		pinion = document.querySelector("input[id = 'pinion']").value,
-		transmission = document.querySelector("select[id = 'models']"),
+		transmission = document.querySelector("select[id = 'modelsGears']"),
 		tire = document.querySelector("input[id = 'tire']").value;
 	if (transmission.selectedIndex > 0) {
 		if (validateNumber([spur, pinion, tire])) {
@@ -225,7 +276,6 @@ function calculateGear(btnObj) {
 }
 function resetGear(btnObj) {
 	btnObj.blur();
-	resetSelect('models');
 	resetInput('spur');
 	resetInput('pinion');
 	resetInput('tire');
@@ -233,16 +283,3 @@ function resetGear(btnObj) {
 	resetResult('rollout');
 }
 
-//navigation
-function activatePage(navId) {
-	// change nav border
-	let container = document.querySelectorAll('.navCtrl');
-	container.forEach(function (item) {
-		item.style.color = (item.id == 'nav' + navId) ? 'var(--paper)' : 'black';
-	});
-	//switch pages
-	container = document.querySelectorAll('.pageCtrl');
-	container.forEach(function (item) {
-		item.style.display = (item.id == 'page' + navId) ? 'block' : 'none';
-	});
-}
