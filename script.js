@@ -1,4 +1,4 @@
-//common
+//global constants
 const rcModels = [
 	{
 		modelName : "ae b6",
@@ -26,27 +26,87 @@ const rcModels = [
 	}
 ]
 
-//on load
+//support
+function getCheckedRadioByName(name) {
+	return document.querySelector("input[name='" + name + "']:checked");
+}
+function getInputByID(id) {
+	return document.querySelector("input[id = '" + id + "']");
+}
+function getSelectByID(id) {
+	return document.querySelector("select[id = '" + id + "']");
+}
+function getSpanByID(id) {
+	return document.querySelector("span[id = '" + id + "']");
+}
+function setInputByID(id,val) {
+	document.querySelector("input[id = '" + id + "']").value = val;
+}
+function setSpanByID(id,val) {
+	document.querySelector("span[id = '" + id + "']").innerHTML = val;
+}
+function getRadiosByValue(val) {
+	return document.querySelectorAll("input[type='radio'][value='" + val + "']");
+}
+function round(val, deci) {
+	return Number(Math.round(val + 'e' + deci) + 'e-' + deci);
+}
+function validateNumber(nArr) {
+	let result = true;
+	for (let item of nArr) {
+		if (item.length == 0 || item <= 0 || isNaN(item)) {
+			result = false;
+			break;
+		}
+	}
+	return result;
+}
+function targetInRange(targ,r1,r2) {
+	let min = Math.min(r1,r2),
+		max = Math.max(r1,r2);
+	return targ > min && targ < max;
+}
+function restrictNonNumeric() {
+	return event.keyCode === 8 || event.keyCode === 46 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40 ? true : !isNaN(Number(event.key));
+}
+
+//common
 function bodyOnLoad() {
-//fill model selectors
-	let gears = document.querySelector("select[id = 'modelsGears']");
-	let pills = document.querySelector("select[id = 'modelsPills']");
 	rcModels.forEach(function (item, index) {
-		//fill gears select input
 		let opt = document.createElement('option');
 		opt.textContent = item.modelName;
-		opt.value = index;
-		gears.appendChild(opt);
-		//fill pills select input
+		opt.value = item.internalGear;
+		getSelectByID("modelsGears").appendChild(opt);
 		if (item.initToe != -1) {
 			opt = document.createElement('option');
 			opt.textContent = item.modelName;
 			opt.value = index;
-			pills.appendChild(opt);
+			getSelectByID("modelsPills").appendChild(opt);
 		}
 	});
-	resetResult("toe", rcModels[0].initToe);
-	resetResult("antisquat", rcModels[0].initAntiSquat);
+	setSpanByID("toe", rcModels[0].initToe);
+	setSpanByID("antisquat", rcModels[0].initAntiSquat);
+	setSpanByID("internal", rcModels[0].internalGear);
+}
+function setModelValues(that) {
+	switch (that.id) {
+		case ("modelsPills"):
+			setSpanByID("toe", rcModels[that.value].initToe);
+			setSpanByID("antisquat", rcModels[that.value].initAntiSquat);
+			setSpanByID("roll", 0);
+			setSpanByID("pivot", 0);
+			let radios = getRadiosByValue("center_center");
+			radios.forEach (function(item, index) {
+				if (!item.name.includes("passive")) {
+					item.checked = true;
+					item.onchange(); //lower case only, 'onChange' will error
+				}
+			})
+			break;
+		case ("modelsGears"):
+			setSpanByID("internal", that.value);
+			calculateGear();
+	}
 }
 
 //navigation
@@ -63,45 +123,7 @@ function activatePage(id) {
 	});
 }
 
-//support
-function resetInput(id) {
-	document.querySelector("input[id = '" + id + "']").value = "";
-}
-function resetResult(id, val) {
-	document.querySelector(".result[id = '" + id + "']").innerHTML = val;
-}
-function round(val, deci) {
-	return Number(Math.round(val + 'e' + deci) + 'e-' + deci);
-}
-function validateNumber(nArr) {
-	let result = true;
-	for (let item of nArr) {
-		if (item.length == 0 || item <= 0 || isNaN(item)) {
-			result = false;
-			break;
-		}
-	}
-	return result;
-}
-function inRange(a, b, c) {
-	let min = Math.min(a, b),
-		max = Math.max(a, b);
-	return c > min && c < max;
-};
-
 //pill arms
-function setModelValues(that) {
-	resetResult("toe", rcModels[that.value].initToe);
-	resetResult("antisquat", rcModels[that.value].initAntiSquat);
-	resetResult("roll", 0);
-	resetResult("pivot", 0);
-	let rad = document.querySelector("input[name='c'][value='center_center']");
-	rad.checked = true;
-	rad.onchange(); //lower case only, 'onChange' will error
-	rad = document.querySelector("input[name='d'][value='center_center']");
-	rad.checked = true;
-	rad.onchange(); //lower case only, 'onChange' will error
-}
 function manageRadios(that) {
 	let iName = "input[name='" + that.name;
 	if (that.name.length == 1) {
@@ -193,7 +215,7 @@ function calculatePills() {
 		if (id.includes(pos)) quant *= -1;
 		return quant;
 	}
-	let selIndex = document.querySelector("select[id = 'modelsPills']").value,
+	let selIndex = getSelectByID("modelsPills").value,
 		toe = rcModels[selIndex].initToe,
 		antiSquat = rcModels[selIndex].initAntiSquat,
 		roll = 0,
@@ -206,80 +228,49 @@ function calculatePills() {
 			pos1 = "_in";
 			pos2 = "up_";
 		}
-		let rbID = document.querySelector("input[name='" + item + "']:checked").value;
-		let rbVal = document.querySelector("input[name='" + item + "_degree']:checked").value;
+		let rbID = getCheckedRadioByName(item).value;
+		let rbVal = getCheckedRadioByName(item + "_degree").value;
 		toe += calcDegree(rbVal, rbID, "_center", pos1);
 		antiSquat += calcDegree(rbVal, rbID, "center_", pos2);
 		pivot += calcRollPivot(rbVal, rbID, "_center", "_in", selIndex);
 		roll += calcRollPivot(rbVal, rbID, "center_", "down_", selIndex);
 	})
-	resetResult("toe", toe);
-	resetResult("antisquat", antiSquat);
-	resetResult("roll", round(roll/2, 3));
-	resetResult("pivot", round(pivot/2, 3));
+	setSpanByID("toe", toe);
+	setSpanByID("antisquat", antiSquat);
+	setSpanByID("roll", round(roll/2, 3));
+	setSpanByID("pivot", round(pivot/2, 3));
 }
 
 //oil mixing
-function calculateOil(btnObj) {
-	btnObj.blur();
-	let viscA = document.querySelector("input[id = 'viscA']").value;
-		viscB = document.querySelector("input[id = 'viscB']").value;
-		target = document.querySelector("input[id = 'target']").value;
+function calculateOil() {
+	let viscA = getInputByID("viscA").value,
+		viscB = getInputByID("viscB").value,
+		target = getInputByID("target").value;
+	setSpanByID("percentA","---");
+	setSpanByID("percentB","---");
 	if (validateNumber([viscA, viscB, target])) {
-		if (inRange(viscA, viscB, target)) {
-			let partA = ( (Math.log(target) - Math.log(viscB)) / (Math.log(viscA) - Math.log(viscB)) ),
-				partB = 1 - partA;
-			document.querySelector(".result[id = 'percentA']").innerHTML = round(partA*100, 0);
-			document.querySelector(".result[id = 'percentB']").innerHTML = round(partB*100, 0);
+		if (targetInRange(target,viscA,viscB)) {
+			let partA = ((Math.log(target) - Math.log(viscB)) / (Math.log(viscA) - Math.log(viscB)));
+			setSpanByID("percentA",round(partA*100, 0));
+			setSpanByID("percentB",round((1 - partA)*100, 0));
 		} else {
-			resetResult('percentA');
-			resetResult('percentB');
 			alert("Target viscosity must fall between the viscosities of fluid A and fluid B!");
 		}
-	} else {
-		resetResult('percentA');
-		resetResult('percentB');
-		alert("All viscosity entries must be: \n     - A valid integer or float. \n     - Greater than zero.");
 	}
-}
-function resetOil(btnObj) {
-	btnObj.blur();
-	resetInput('viscA');
-	resetInput('viscB');
-	resetInput('target');
-	resetResult('percentA');
-	resetResult('percentB');
 }
 
 //gear ratio: spur / pinion * trans
-function calculateGear(btnObj) {
-	btnObj.blur();
-	let spur = document.querySelector("input[id = 'spur']").value,
-		pinion = document.querySelector("input[id = 'pinion']").value,
-		transmission = document.querySelector("select[id = 'modelsGears']"),
-		tire = document.querySelector("input[id = 'tire']").value;
-	if (transmission.selectedIndex > 0) {
-		if (validateNumber([spur, pinion, tire])) {
-			let finalGear = (spur / pinion) * transmission.value;
-			document.querySelector(".result[id = 'final']").innerHTML = round(finalGear, 3);
-			document.querySelector(".result[id = 'rollout']").innerHTML = round((tire * 3.1415) / finalGear, 3);
-		} else {
-			resetResult('final');
-			resetResult('rollout');
-			alert("All gear entries must be: \n     - A valid integer or float. \n     - Greater than zero.");
-		}
-	} else {
-		resetResult('final');
-		resetResult('rollout');
-		alert("Please select a model for the internal transmission gear ratio.");
+function calculateGear() {
+	let transmission = getSelectByID("modelsGears").value,
+		spur = getInputByID("spur").value,
+		pinion = getInputByID("pinion").value,
+		tire = getInputByID("tire").value;
+	setSpanByID("final","---");
+	setSpanByID("rollout","---");
+	if (validateNumber([spur, pinion])) {
+		let finalGear = (spur / pinion) * transmission;
+		setSpanByID("final",round(finalGear, 3));
+		if (validateNumber([tire])) setSpanByID("rollout",round((tire * 3.1415) / finalGear, 3));
 	}
-}
-function resetGear(btnObj) {
-	btnObj.blur();
-	resetInput('spur');
-	resetInput('pinion');
-	resetInput('tire');
-	resetResult('final');
-	resetResult('rollout');
 }
 

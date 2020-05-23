@@ -18,7 +18,7 @@
 				<h3>Arm Mount Eccentric Bushings Calculator</h3>
 				<div class="container">
 					<p class="labels">Model:
-						<select required id="modelsPills" onChange="setModelValues(this)"></select>
+						<select id="modelsPills" onChange="setModelValues(this)"></select>
 					</p>
 					<hr>
 					<p class="labels labelsShort">C-arm:</p>
@@ -37,11 +37,14 @@
 							<input type="radio" name="c" value="down_in" onchange="manageRadios(this);">
 						</div>
 						<div class="degreeOrig">
-							<input type="radio" name="c_degree" value="0" onchange="manageRadios(this);" checked>0.0&deg;
+							<input type="radio" name="c_degree" id="radio1" value="0" onchange="manageRadios(this);" checked>
+							<label for="radio1">0.0&deg;</label>
 							<br>
-							<input type="radio" name="c_degree" value="0.5" onchange="manageRadios(this);" disabled>0.5&deg;
+							<input type="radio" name="c_degree" id="radio2" value="0.5" onchange="manageRadios(this);" disabled>
+							<label for="radio2">0.5&deg;</label>
 							<br>
-							<input type="radio" name="c_degree" value="1" onchange="manageRadios(this);" disabled>1.0&deg;
+							<input type="radio" name="c_degree" id="radio3" value="1" onchange="manageRadios(this);" disabled>
+							<label for="radio3">1.0&deg;</label>
 						</div>
 						<div class="passiveArm">
 							<input type="radio" name="c_passive" value="up_in" disabled>
@@ -57,14 +60,18 @@
 							<input type="radio" name="c_passive" value="down_out" disabled>
 						</div>
 						<div class="degreeNew1 degreeCom">
-							1/.5&deg; T1(R)<input type="radio" name="c_degree" value="1.5R" onchange="manageRadios(this);" disabled>
+							<label for="radio4">1/.5&deg; T1(R)</label>
+							<input type="radio" name="c_degree" id="radio4" value="1.5R" onchange="manageRadios(this);" disabled>
 							<br>
-							1/.5&deg; T2(L)<input type="radio" name="c_degree" value="1.5L" onchange="manageRadios(this);" disabled>
+							<label for="radio5">1/.5&deg; T2(L)</label>
+							<input type="radio" name="c_degree" id="radio5" value="1.5L" onchange="manageRadios(this);" disabled>
 						</div>
 						<div class="degreeNew2 degreeCom">
-							<input type="radio" name="c_degree_passive" value="1.5L" disabled>1/.5&deg; T2(L)
+							<input type="radio" name="c_degree_passive" id="radio6" value="1.5L" disabled>
+							<label for="radio6">1/.5&deg; T2(L)</label>
 							<br>
-							<input type="radio" name="c_degree_passive" value="1.5R" disabled>1/.5&deg; T1(R)
+							<input type="radio" name="c_degree_passive" id="radio7" value="1.5R" disabled>
+							<label for="radio7">1/.5&deg; T1(R)</label>
 						</div>
 					</div>
 					<hr>
@@ -84,11 +91,14 @@
 							<input type="radio" name="d" value="down_in" onchange="manageRadios(this);">
 						</div>
 						<div class="degreeOrig">
-							<input type="radio" name="d_degree" value="0" onchange="manageRadios(this);" checked>0.0&deg;
+							<input type="radio" name="d_degree" id="radio8" value="0" onchange="manageRadios(this);" checked>
+							<label for="radio8">0.0&deg;</label>
 							<br>
-							<input type="radio" name="d_degree" value="0.5" onchange="manageRadios(this);" disabled>0.5&deg;
+							<input type="radio" name="d_degree" id="radio9" value="0.5" onchange="manageRadios(this);" disabled>
+							<label for="radio9">0.5&deg;</label>
 							<br>
-							<input type="radio" name="d_degree" value="1" onchange="manageRadios(this);" disabled>1.0&deg;
+							<input type="radio" name="d_degree" id="radio10" value="1" onchange="manageRadios(this);" disabled>
+							<label for="radio10">1.0&deg;</label>
 						</div>
 						<div class="passiveArm">
 							<input type="radio" name="d_passive" value="up_in" disabled>
@@ -104,14 +114,18 @@
 							<input type="radio" name="d_passive" value="down_out" disabled>
 						</div>
 						<div class="degreeNew1 degreeCom">
-							1/.5&deg; T1(R)<input type="radio" name="d_degree" value="1.5R" onchange="manageRadios(this);" disabled>
+							<label for="radio11">1/.5&deg; T1(R)</label>
+							<input type="radio" name="d_degree" id="radio11" value="1.5R" onchange="manageRadios(this);" disabled>
 							<br>
-							1/.5&deg; T2(L)<input type="radio" name="d_degree" value="1.5L" onchange="manageRadios(this);" disabled>
+							<label for="radio12">1/.5&deg; T2(L)</label>
+							<input type="radio" name="d_degree" id="radio12" value="1.5L" onchange="manageRadios(this);" disabled>
 						</div>
 						<div class="degreeNew2 degreeCom">
-							<input type="radio" name="d_degree_passive" value="1.5L" disabled>1/.5&deg; T2(L)
+							<input type="radio" name="d_degree_passive" id="radio13" value="1.5L" disabled>
+							<label for="radio13">1/.5&deg; T2(L)</label>
 							<br>
-							<input type="radio" name="d_degree_passive" value="1.5R" disabled>1/.5&deg; T1(R)
+							<input type="radio" name="d_degree_passive" id="radio14" value="1.5R" disabled>
+							<label for="radio14">1/.5&deg; T1(R)</label>
 						</div>
 					</div>
 					<hr>
@@ -126,20 +140,17 @@
 			<div class="pageCtrl" id="page2"> <!-- START page 2 -->
 				<h3>Gear Ratio and Roll Out Calulator</h3>
 				<div class="container">
-					<p class="labels">Model:
-						<select required id="modelsGears"></select>
-					</p>
+					<p class="labels">Model:<select id="modelsGears" onchange="setModelValues(this)"></select></p>
+					<p class="labels smallText">Internal gear ratio:<span class="result" id="internal">---</span></p>
 					<hr>
-					<p class="labels">Spur gear:<input type="number" id="spur" placeholder="number of teeth"></p>
-					<p class="labels">Pinion gear:<input type="number" id="pinion" placeholder="number of teeth"></p>
-					<p class="labels">Tire diameter:<input type="number" id="tire" placeholder="in, mm, cm, etc"></p>
-					<input type="button" onclick="calculateGear(this)" value="Calculate">
+					<p class="labels">Spur gear:<input type="number" id="spur" min=1 onkeydown="return restrictNonNumeric()" onchange="calculateGear()" placeholder="number of teeth"></p>
+					<p class="labels">Pinion gear:<input type="number" id="pinion" min=1 onkeydown="return restrictNonNumeric()" onchange="calculateGear()" placeholder="number of teeth"></p>
+					<p class="labels">Tire diameter:<input type="number" id="tire" min=1 onkeydown="return restrictNonNumeric()" onchange="calculateGear()" placeholder="in, mm, cm, etc"></p>
 					<hr>
 					<p class="labels">Final drive gear ratio:<span class="result" id="final">---</span></p>
-					<p class="labels">Roll out:<span class="result" id="rollout">---</span></p>
-					<p class="smallText">Roll out unit reflects tire diameter unit (in, mm, cm, etc.).</p>
+					<p class="labels">Roll out**:<span class="result" id="rollout">---</span></p>
+					<p class="smallText">*Roll out unit reflects tire diameter unit (in, mm, cm, etc.).</p>
 				</div>
-				<input type="button" onclick="resetGear(this)" value="Reset">
 			</div>
 			<div class="pageCtrl" id="page3"> <!-- START page 3 -->
 				<h3>Silicone Oil Viscosity Calculator</h3>
@@ -147,18 +158,16 @@
 					<p class="smallText">
 						All values should be in centistokes (cSt). Weights (30wt, etc.) can vary by manufacturer but cSt should be standard.
 					</p>
-					<p class="labels">Fluid A:<input type="number" id="viscA" placeholder="cSt"></p>
-					<p class="labels">Fluid B:<input type="number" id="viscB" placeholder="cSt"></p>
-					<p class="labels">Target:<input type="number" id="target" placeholder="cSt"></p>
-					<input type="button" onclick="calculateOil(this)" value="Calculate">
+					<p class="labels">Fluid A:<input type="number" id="viscA" min=1 onkeydown="return restrictNonNumeric()" onchange="calculateOil()" placeholder="cSt"></p>
+					<p class="labels">Fluid B:<input type="number" id="viscB" min=1 onkeydown="return restrictNonNumeric()" onchange="calculateOil()" placeholder="cSt"></p>
+					<p class="labels">Target:<input type="number" id="target" min=1 onkeydown="return restrictNonNumeric()" onchange="calculateOil()" placeholder="cSt"></p>
 					<hr>
 					<p class="labels">% fluid A<span class="result" id="percentA">---</span></p>
 					<p class="labels">% fluid B<span class="result" id="percentB">---</span></p>
+					<p class="smallText">
+						This calculator is based on the code from <a href="https://scriptasylum.com/rc_speed/oil_mixer.html" target="_blank">https://scriptasylum.com/rc_speed/oil_mixer.html</a>.
+					</p>
 				</div>
-				<input type="button" onclick="resetOil(this)" value="Reset">
-				<p class="smallText">
-					This calculator is based on the code from <a href="https://scriptasylum.com/rc_speed/oil_mixer.html" target="_blank">https://scriptasylum.com/rc_speed/oil_mixer.html</a>.
-				</p>
 			</div>
 		</div>
 		<footer>
