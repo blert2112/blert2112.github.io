@@ -67,7 +67,9 @@ function targetInRange(targ,r1,r2) {
 	return targ > min && targ < max;
 }
 function restrictNonNumeric() {
-	return event.keyCode === 8 || event.keyCode === 46 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40 || event.keyCode === 110 || event.keyCode === 190 ? true : !isNaN(Number(event.key));
+	const codes = [69,107,109,187,189]; // exclude ... e,num+,num-,+,-
+	if (codes.includes(event.keyCode)) return false;
+	else return true;
 }
 
 //common
