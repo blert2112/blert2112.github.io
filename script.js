@@ -30,6 +30,9 @@ const rcModels = [
 function getCheckedRadioByName(name) {
 	return document.querySelector("input[name='" + name + "']:checked");
 }
+function getRadioByNameAndValue(name, val) {
+	return document.querySelector("input[name='" + name + "'][value='" + val + "']");
+}
 function getInputByID(id) {
 	return document.querySelector("input[id = '" + id + "']");
 }
@@ -39,14 +42,20 @@ function getSelectByID(id) {
 function getSpanByID(id) {
 	return document.querySelector("span[id = '" + id + "']");
 }
+function getRadiosByName(name) {
+	return document.querySelectorAll("input[name='" + name + "']");
+}
+function getRadiosByValue(val) {
+	return document.querySelectorAll("input[type='radio'][value='" + val + "']");
+}
+function getAllByClass(cla) {
+	return document.querySelectorAll(cla);
+}
 function setInputByID(id,val) {
 	document.querySelector("input[id = '" + id + "']").value = val;
 }
 function setSpanByID(id,val) {
 	document.querySelector("span[id = '" + id + "']").innerHTML = val;
-}
-function getRadiosByValue(val) {
-	return document.querySelectorAll("input[type='radio'][value='" + val + "']");
 }
 function round(val, deci) {
 	return Number(Math.round(val + 'e' + deci) + 'e-' + deci);
@@ -113,14 +122,14 @@ function setModelValues(that) {
 
 //navigation
 function activatePage(id) {
-	// change nav border
-	let container = document.querySelectorAll('.navCtrl');
-	container.forEach(function (item) {
+	// change nav color
+	let container = getAllByClass('.navCtrl');
+	container.forEach(function(item) {
 		item.style.color = (item.id == 'nav' + id) ? 'var(--paper)' : 'black';
 	});
 	//switch pages
-	container = document.querySelectorAll('.pageCtrl');
-	container.forEach(function (item) {
+	container = getAllByClass('.pageCtrl');
+	container.forEach(function(item) {
 		item.style.display = (item.id == 'page' + id) ? 'block' : 'none';
 	});
 }
@@ -130,13 +139,13 @@ function manageRadios(that) {
 	let iName = "input[name='" + that.name;
 	if (that.name.length == 1) {
 		//disable current passive
-		document.querySelector(iName + "_passive']:checked").disabled = true;
+		getCheckedRadioByName(that.name + "_passive").disabled = true;
 		//set new passive arm
-		let rad = document.querySelector(iName + "_passive'][value='" + that.value + "']");
+		let rad = getRadioByNameAndValue(that.name + "_passive", that.value);
 		rad.checked = true;
 		rad.disabled = false;
-		let degRads = document.querySelectorAll(iName + "_degree']");
-		let degPass = document.querySelectorAll(iName + "_degree_passive']");
+		let degRads = getRadiosByName(that.name + "_degree");
+		let degPass = getRadiosByName(that.name + "_degree_passive");
 		if (that.value == "center_center") {
 			degRads[0].checked = true;
 			degRads[0].disabled = false;
@@ -167,8 +176,8 @@ function manageRadios(that) {
 			}
 		}
 	} else {
-		let degRads = document.querySelectorAll(iName + "']");
-		let degPass = document.querySelectorAll(iName + "_passive']");
+		let degRads = getRadiosByName(that.name);
+		let degPass = getRadiosByName(that.name + "_passive");
 		if (degRads[3].checked == true) {
 			degPass[0].checked = true;
 			degPass[0].disabled = false;

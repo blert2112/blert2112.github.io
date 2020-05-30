@@ -1,10 +1,12 @@
-/* common */
+/* constants */
 :root {
   --dusty: #96858F;
   --lavender: #6D7993;
   --overcast: #9099A2;
   --paper: #D5D5D5;
 }
+
+/* big picture */
 html, body {
 	height: 100%;
 }
@@ -21,16 +23,33 @@ body {
 		max-width: 30em;
 	}
 }
-footer {
-	margin-top: auto;
+header {
 	padding-bottom: 0.5em;
-	position: fixed;
-	bottom: 0;
-	left: 50%;
-	transform: translateX(-50%);
 }
-span {
+
+/* common */
+a:link {
+	color: black;
+}
+a:active {
+	color: var(--paper);
+}
+a:visited {
+	color: black;
+}
+h3 {
+	margin-bottom: 0.5em;
+}
+hr {
+	margin-top: 1em;
+	border-color: var(--dusty);
+}
+input[type=number], select {
 	float: right;
+	box-sizing:border-box;
+	width: 12em;
+	border-width: 0;
+	text-align: right;
 }
 input[type='radio']:after {
 	width: 12px;
@@ -53,12 +72,9 @@ input[type='radio']:disabled:after {
 label {
 	position: relative;
 }
-input[type=number], select {
-	float: right;
-	box-sizing:border-box;
-	width: 12em;
-	border-width: 0;
-	text-align: right;
+option {
+	direction: rtl;
+	color: grey;
 }
 select {
 	background-color: white;
@@ -66,25 +82,8 @@ select {
 select:invalid {
 	color: grey;
 }
-option {
-	direction: rtl;
-	color: grey;
-}
-hr {
-	margin-top: 1em;
-	border-color: var(--dusty);
-}
-a:link {
-	color: black;
-}
-a:active {
-	color: var(--paper);
-}
-a:visited {
-	color: black;
-}
-.smallText {
-	font-size: x-small;
+span {
+	float: right;
 }
 .container {
 	border: 1px solid black;
@@ -103,12 +102,11 @@ a:visited {
 .result {
 	font-weight: bold;
 }
+.smallText {
+	font-size: x-small;
+}
 
 /* pill arms */
-.radios {
-	display: grid;
-	grid-template-columns: auto 6em auto;
-}
 .activeArm {
 	grid-column: 1/2;
 	text-align: right;
@@ -116,9 +114,6 @@ a:visited {
 	padding-bottom: 1em;
 	border-right: 1px solid var(--dusty);
 	border-bottom: 1px solid var(--dusty);
-}
-.degreeOrig {
-	grid-column: 2/3;
 }
 .degreeCom {
 	margin-top: 0.75em;
@@ -133,6 +128,9 @@ a:visited {
 	margin-left: 0.5em;
 	text-align: left;
 }
+.degreeOrig {
+	grid-column: 2/3;
+}
 .passiveArm {
 	grid-column: 3/4;
 	text-align: left;
@@ -140,6 +138,10 @@ a:visited {
 	padding-bottom: 1em;
 	border-left: 1px solid var(--dusty);
 	border-bottom: 1px solid var(--dusty);
+}
+.radios {
+	display: grid;
+	grid-template-columns: auto 6em auto;
 }
 
 /* navigation */
