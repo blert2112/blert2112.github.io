@@ -72,16 +72,6 @@ input[type='radio']:disabled:after {
 label {
 	position: relative;
 }
-option {
-	direction: rtl;
-	color: grey;
-}
-select {
-	background-color: white;
-}
-select:invalid {
-	color: grey;
-}
 span {
 	float: right;
 }
