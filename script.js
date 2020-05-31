@@ -27,37 +27,28 @@ const rcModels = [
 ]
 
 //support
-function getCheckedRadioByName(name) {
-	return document.querySelector("input[name='" + name + "']:checked");
+function getCheckedByName(name) {
+	return document.querySelector("[name='" + name + "']:checked");
 }
-function getRadioByNameAndValue(name, val) {
-	return document.querySelector("input[name='" + name + "'][value='" + val + "']");
+function getElementByID(id) {
+	return document.querySelector("#" + id);
 }
-function getInputByID(id) {
-	return document.querySelector("input[id = '" + id + "']");
-}
-function getSelectByID(id) {
-	return document.querySelector("select[id = '" + id + "']");
-}
-function getSpanByID(id) {
-	return document.querySelector("span[id = '" + id + "']");
-}
-function getRadiosByName(name) {
-	return document.querySelectorAll("input[name='" + name + "']");
-}
-function getRadiosByValue(val) {
-	return document.querySelectorAll("input[type='radio'][value='" + val + "']");
+function getRadioByNameAndValue(name,val) {
+	return document.querySelector("[name='" + name + "'][value='" + val + "']");
 }
 function getAllByClass(cla) {
-	return document.querySelectorAll(cla);
+	return document.querySelectorAll("." + cla);
 }
-function setInputByID(id,val) {
-	document.querySelector("input[id = '" + id + "']").value = val;
+function getRadiosByName(name) {
+	return document.querySelectorAll("[type='radio'][name='" + name + "']");
 }
-function setSpanByID(id,val) {
-	document.querySelector("span[id = '" + id + "']").innerHTML = val;
+function getRadiosByValue(val) {
+	return document.querySelectorAll("[type='radio'][value='" + val + "']");
 }
-function round(val, deci) {
+function setTextByID(id,txt) {
+	document.querySelector("#" + id).innerHTML = txt;
+}
+function round(val,deci) {
 	return Number(Math.round(val + 'e' + deci) + 'e-' + deci);
 }
 function validateNumber(nArr) {
@@ -87,25 +78,25 @@ function bodyOnLoad() {
 		let opt = document.createElement('option');
 		opt.textContent = item.modelName;
 		opt.value = item.internalGear;
-		getSelectByID("modelsGears").appendChild(opt);
+		getElementByID("modelsGears").appendChild(opt);
 		if (item.initToe != -1) {
 			opt = document.createElement('option');
 			opt.textContent = item.modelName;
 			opt.value = index;
-			getSelectByID("modelsPills").appendChild(opt);
+			getElementByID("modelsPills").appendChild(opt);
 		}
 	});
-	setSpanByID("toe", rcModels[0].initToe);
-	setSpanByID("antisquat", rcModels[0].initAntiSquat);
-	setSpanByID("internal", rcModels[0].internalGear);
+	setTextByID("toe", rcModels[0].initToe);
+	setTextByID("antisquat", rcModels[0].initAntiSquat);
+	setTextByID("internal", rcModels[0].internalGear);
 }
 function setModelValues(that) {
 	switch (that.id) {
 		case ("modelsPills"):
-			setSpanByID("toe", rcModels[that.value].initToe);
-			setSpanByID("antisquat", rcModels[that.value].initAntiSquat);
-			setSpanByID("roll", 0);
-			setSpanByID("pivot", 0);
+			setTextByID("toe", rcModels[that.value].initToe);
+			setTextByID("antisquat", rcModels[that.value].initAntiSquat);
+			setTextByID("roll", 0);
+			setTextByID("pivot", 0);
 			let radios = getRadiosByValue("center_center");
 			radios.forEach (function(item, index) {
 				if (!item.name.includes("passive")) {
@@ -115,7 +106,7 @@ function setModelValues(that) {
 			})
 			break;
 		case ("modelsGears"):
-			setSpanByID("internal", that.value);
+			setTextByID("internal", that.value);
 			calculateGear();
 	}
 }
@@ -123,12 +114,12 @@ function setModelValues(that) {
 //navigation
 function activatePage(id) {
 	// change nav color
-	let container = getAllByClass('.navCtrl');
+	let container = getAllByClass('navCtrl');
 	container.forEach(function(item) {
 		item.style.color = (item.id == 'nav' + id) ? 'var(--paper)' : 'black';
 	});
 	//switch pages
-	container = getAllByClass('.pageCtrl');
+	container = getAllByClass('pageCtrl');
 	container.forEach(function(item) {
 		item.style.display = (item.id == 'page' + id) ? 'block' : 'none';
 	});
@@ -139,7 +130,7 @@ function manageRadios(that) {
 	let iName = "input[name='" + that.name;
 	if (that.name.length == 1) {
 		//disable current passive
-		getCheckedRadioByName(that.name + "_passive").disabled = true;
+		getCheckedByName(that.name + "_passive").disabled = true;
 		//set new passive arm
 		let rad = getRadioByNameAndValue(that.name + "_passive", that.value);
 		rad.checked = true;
@@ -226,7 +217,7 @@ function calculatePills() {
 		if (id.includes(pos)) quant *= -1;
 		return quant;
 	}
-	let selIndex = getSelectByID("modelsPills").value,
+	let selIndex = getElementByID("modelsPills").value,
 		toe = rcModels[selIndex].initToe,
 		antiSquat = rcModels[selIndex].initAntiSquat,
 		roll = 0,
@@ -239,31 +230,31 @@ function calculatePills() {
 			pos1 = "_in";
 			pos2 = "up_";
 		}
-		let rbID = getCheckedRadioByName(item).value;
-		let rbVal = getCheckedRadioByName(item + "_degree").value;
+		let rbID = getCheckedByName(item).value;
+		let rbVal = getCheckedByName(item + "_degree").value;
 		toe += calcDegree(rbVal, rbID, "_center", pos1);
 		antiSquat += calcDegree(rbVal, rbID, "center_", pos2);
 		pivot += calcRollPivot(rbVal, rbID, "_center", "_in", selIndex);
 		roll += calcRollPivot(rbVal, rbID, "center_", "down_", selIndex);
 	})
-	setSpanByID("toe", toe);
-	setSpanByID("antisquat", antiSquat);
-	setSpanByID("roll", round(roll/2, 3));
-	setSpanByID("pivot", round(pivot/2, 3));
+	setTextByID("toe", toe);
+	setTextByID("antisquat", antiSquat);
+	setTextByID("roll", round(roll/2, 3));
+	setTextByID("pivot", round(pivot/2, 3));
 }
 
 //oil mixing
 function calculateOil() {
-	let viscA = getInputByID("viscA").value,
-		viscB = getInputByID("viscB").value,
-		target = getInputByID("target").value;
-	setSpanByID("percentA","---");
-	setSpanByID("percentB","---");
+	let viscA = getElementByID("viscA").value,
+		viscB = getElementByID("viscB").value,
+		target = getElementByID("target").value;
+	setTextByID("percentA","---");
+	setTextByID("percentB","---");
 	if (validateNumber([viscA, viscB, target])) {
 		if (targetInRange(target,viscA,viscB)) {
 			let partA = ((Math.log(target) - Math.log(viscB)) / (Math.log(viscA) - Math.log(viscB)));
-			setSpanByID("percentA",round(partA*100, 0));
-			setSpanByID("percentB",round((1 - partA)*100, 0));
+			setTextByID("percentA",round(partA*100, 0));
+			setTextByID("percentB",round((1 - partA)*100, 0));
 		} else {
 			alert("Target viscosity must fall between the viscosities of fluid A and fluid B!");
 		}
@@ -272,16 +263,16 @@ function calculateOil() {
 
 //gear ratio: spur / pinion * trans
 function calculateGear() {
-	let transmission = getSelectByID("modelsGears").value,
-		spur = getInputByID("spur").value,
-		pinion = getInputByID("pinion").value,
-		tire = getInputByID("tire").value;
-	setSpanByID("final","---");
-	setSpanByID("rollout","---");
+	let transmission = getElementByID("modelsGears").value,
+		spur = getElementByID("spur").value,
+		pinion = getElementByID("pinion").value,
+		tire = getElementByID("tire").value;
+	setTextByID("final","---");
+	setTextByID("rollout","---");
 	if (validateNumber([spur, pinion])) {
 		let finalGear = (spur / pinion) * transmission;
-		setSpanByID("final",round(finalGear, 3));
-		if (validateNumber([tire])) setSpanByID("rollout",round((tire * 3.1415) / finalGear, 3));
+		setTextByID("final",round(finalGear, 3));
+		if (validateNumber([tire])) setTextByID("rollout",round((tire * 3.1415) / finalGear, 3));
 	}
 }
 
